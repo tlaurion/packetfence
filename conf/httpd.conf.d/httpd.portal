@@ -128,8 +128,8 @@ PerlPostConfigHandler pf::WebAPI::InitHandler::post_config
 # portal if the URL is not otherwised allowed by passthrough or part of the
 # portal itself.
 
-AcceptMutex posixsem
-SSLMutex posixsem
+Mutex posixsem default
+Mutex posixsem ssl-cache
 ServerLimit 512
 
 Header always set X-DNS-Prefetch-Control off

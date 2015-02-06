@@ -2,6 +2,9 @@
 
 #Debian specific
 <IfDefine debian>
+  <IfModule !mod_socache_shmcb.c>
+    LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
+  </IfModule>
   <IfModule !prefork.c>
     LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
   </IfModule>
@@ -39,6 +42,9 @@
   <IfModule !prefork.c>
     LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
   </IfModule>
+  <IfModule !mod_socache_shmcb.c>
+    LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+  </IfModule>
   <IfModule !mod_perl.c>
     LoadModule perl_module modules/mod_perl.so
   </IfModule>
@@ -72,6 +78,7 @@
 TraceEnable off
 
 AcceptMutex posixsem
+Mutex posixsem default
 
 PerlSwitches -I/usr/local/pf/lib
 PerlSwitches -I/usr/local/pf/html/pfappserver/lib
@@ -146,9 +153,9 @@ $HostnameLookups = "off";
 $MaxRequestsPerChild = "1000";
 
 $SSLPassPhraseDialog = "builtin";
-$SSLSessionCache = "shm:".$install_dir."/var/ssl_acache(512000)";
+$SSLSessionCache = "shmcb:".$install_dir."/var/ssl_acache(512000)";
 $SSLSessionCacheTimeout = "300";
-$SSLMutex = "file:".$install_dir."/var/ssl_mutex";
+$Mutex = "file:".$install_dir."/var/ssl_mutex ssl-cache";
 $SSLRandomSeed = "startup builtin";
 $SSLRandomSeed = "startup file:/dev/urandom 1024";
 $SSLRandomSeed = "connect builtin";
@@ -200,4 +207,3 @@ push @{ $VirtualHost{$vhost.":".$PfConfig->{'ports'}{'pf_status'}} },
     };
 
 </Perl>
-
