@@ -2,6 +2,9 @@
 
 #Debian specific
 <IfDefine debian>
+  <IfModule !prefork.c>
+    LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
+  </IfModule>
   <IfModule !mod_perl.c>
     LoadModule perl_module /usr/lib/apache2/modules/mod_perl.so
   </IfModule>
@@ -33,6 +36,9 @@
 
 #RHEL specific
 <IfDefine rhel>
+  <IfModule !prefork.c>
+    LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+  </IfModule>
   <IfModule !mod_perl.c>
     LoadModule perl_module modules/mod_perl.so
   </IfModule>
