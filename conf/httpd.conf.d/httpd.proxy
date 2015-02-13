@@ -2,9 +2,20 @@
 
 #Debian specific
 <IfDefine debian>
-  <IfModule !prefork.c>
-    LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
-  </IfModule>
+  <IfVersion >= 2.4>
+    <IfModule !mod_authz_core.c>
+      LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
+    </IfModule>
+    <IfModule !mod_authn_core.c>
+      LoadModule authn_core_module /usr/lib/apache2/modules/mod_authn_core.so
+    </IfModule>
+    <IfModule !mod_socache_shmcb.c>
+      LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
+    </IfModule>
+    <IfModule !prefork.c>
+      LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
+    </IfModule>
+  </IfVersion>
   <IfModule !mod_perl.c>
     LoadModule perl_module /usr/lib/apache2/modules/mod_perl.so
   </IfModule>
@@ -48,9 +59,20 @@
 
 #RHEL specific
 <IfDefine rhel>
-  <IfModule !prefork.c>
-    LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
-  </IfModule>
+  <IfVersion >= 2.4>
+    <IfModule !mod_authz_core.c>
+      LoadModule authz_core_module modules/mod_authz_core.so
+    </IfModule>
+    <IfModule !mod_authn_core.c>
+      LoadModule authn_core_module modules/mod_authn_core.so
+    </IfModule>
+    <IfModule !prefork.c>
+      LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+    </IfModule>
+    <IfModule !mod_socache_shmcb.c>
+      LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+    </IfModule>
+  </IfVersion>
   <IfModule !mod_perl.c>
     LoadModule perl_module modules/mod_perl.so
   </IfModule>
