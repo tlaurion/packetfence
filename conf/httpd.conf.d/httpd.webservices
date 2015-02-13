@@ -2,6 +2,15 @@
 
 #Debian Specific
 <IfDefine debian>
+  <IfModule !mod_authn_core.c>
+    LoadModule authn_core_module /usr/lib/apache2/modules/mod_authn_core.so
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
+  </IfModule>
+  <IfModule !mod_socache_shmcb.c>
+    LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
+  </IfModule>
   <IfModule !prefork.c>
     LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
   </IfModule>
@@ -42,6 +51,15 @@
 
 #RHEL Specific
 <IfDefine rhel>
+  <IfModule !mod_authn_core.c>
+    LoadModule authn_core_module modules/mod_authn_core.so
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    LoadModule authz_core_module modules/mod_authz_core.so
+  </IfModule>
+  <IfModule !mod_socache_shmcb.c>
+    LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+  </IfModule>
   <IfModule !prefork.c>
     LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
   </IfModule>
@@ -134,7 +152,7 @@ $HostnameLookups = "off";
 $MaxRequestsPerChild = "1000";
 
 $SSLPassPhraseDialog = "builtin";
-$SSLSessionCache = "shm:".$install_dir."/var/ssl_wcache(512000)";
+$SSLSessionCache = "shmcb:".$install_dir."/var/ssl_wcache(512000)";
 $SSLSessionCacheTimeout = "300";
 $SSLRandomSeed = "startup builtin";
 $SSLRandomSeed = "startup file:/dev/urandom 1024";
@@ -219,4 +237,3 @@ push @{ $VirtualHost{"127.0.0.1:$PfConfig->{'ports'}{'soap'}"} },
 
 
 </Perl>
-

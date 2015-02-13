@@ -1,4 +1,16 @@
 <IfDefine debian>
+  <IfModule !mod_version.c>
+    LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+  </IfModule>
+  <IfModule !mod_authn_core.c>
+    LoadModule authn_core_module /usr/lib/apache2/modules/mod_authn_core.so
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
+  </IfModule>
+  <IfModule !mod_socache_shmcb.c>
+    LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
+  </IfModule>
   <IfModule !prefork.c>
     LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
   </IfModule>
@@ -55,6 +67,15 @@
 
 #RHEL specific
 <IfDefine rhel>
+  <IfModule !mod_authn_core.c>
+    LoadModule authn_core_module modules/mod_authn_core.so
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    LoadModule authz_core_module modules/mod_authz_core.so
+  </IfModule>
+  <IfModule !mod_socache_shmcb.c>
+    LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+  </IfModule>
   <IfModule !prefork.c>
     LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
   </IfModule>
@@ -135,8 +156,14 @@ ServerLimit 512
 Header always set X-DNS-Prefetch-Control off
 
 <Proxy *>
-  Order deny,allow
-  Allow from all
+  <IfVersion < 2.4>
+    AllowOverride All
+    Order deny,allow
+    Allow from all
+  </IfVersion>
+  <IfVersion >= 2.4>
+    Require all granted
+  </IfVersion>
 </Proxy>
 
 <Files ~ "\.(cgi?)$">
@@ -244,7 +271,7 @@ $PerlChildInitHandler = "pf::WebAPI::InitHandler::child_init";
 
 
 $SSLPassPhraseDialog = "builtin";
-$SSLSessionCache = "shm:".$install_dir."/var/ssl_pcache(512000)";
+$SSLSessionCache = "shmcb:".$install_dir."/var/ssl_pcache(512000)";
 $SSLSessionCacheTimeout = "300";
 $SSLRandomSeed = "startup builtin";
 $SSLRandomSeed = "startup file:/dev/urandom 1024";
@@ -264,9 +291,19 @@ my @status_options;
 if($status_only_on_production) {
     @status_options = (
         '~ "/status"' => {
-            "Order"             => "allow,deny",
-            "Deny"              => "from $routedNets $loadbalancersIp 127.0.0.1 ",
-            "Allow"             => "from all",
+            IfVersion => {
+                "< 2.4" => {
+                    "Order"             => "allow,deny",
+                    "Deny"              => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                    "Allow"             => "from all",
+                },
+                ">= 2.4" => {
+                    "Require"           => "not ip $routedNets",
+                    "Require"           => "not ip $loadbalancersIp",
+                    "Require"           => "not local",
+                    "Require"           => "all granted",
+                },
+            },
             SetHandler          => 'modperl',
             PerlResponseHandler => 'captiveportal',
         },
@@ -292,7 +329,14 @@ my @allowed_from_all_options;
 if ($allowed_from_all_urls) {
     @allowed_from_all_options = (
         "~ \"/$allowed_from_all_urls\"" => {
-            "Allow"             => "from all",
+            IfVersion => {
+                "< 2.4" => {
+                    "Allow"             => "from all",
+                },
+                ">= 2.4" => {
+                    "Require"           => "all granted",
+                },
+            },
             SetHandler          => 'modperl',
             PerlResponseHandler => 'captiveportal',
         },
@@ -329,24 +373,58 @@ foreach my $interface ( uniq @internal_nets, @portal_ints ) {
          PerlTransHandler => 'pf::web::dispatcher::custom',
          Location     => gen_conf(
              "/" => {
-                 "Order" => "deny,allow",
-                 "Deny" => "from all",
-                 "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                 IfVersion => { 
+                    "< 2.4" => {
+                        "Order" => "deny,allow",
+                        "Deny" => "from all",
+                        "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all denied",
+                        "Require"           => "ip $routedNets",
+                        "Require"           => "ip $loadbalancersIp",
+                        "Require"           => "local",
+                    },
+                 },
                  SetHandler => 'modperl',
                  PerlResponseHandler => 'captiveportal',
              },
              "/static" => {
-                 "Order" => "deny,allow",
-                 "Deny" => "from all",
-                 "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Order" => "deny,allow",
+                        "Deny" => "from all",
+                        "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all denied",
+                        "Require"           => "ip $routedNets",
+                        "Require"           => "ip $loadbalancersIp",
+                        "Require"           => "local",
+                    },
+                 },
                  SetHandler => 'default-handler',
              },
              "/common" => {
-                 "Allow" => "from all",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Allow" => "from all",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all granted",
+                    },
+                 },
                  SetHandler => 'default-handler',
              },
              "/content" => {
-                "Allow" => "from all",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Allow" => "from all",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all granted",
+                    },
+                 },
              },
              "/hook/billing" => {
                 "SetHandler" => "modperl",
@@ -371,24 +449,58 @@ foreach my $interface ( uniq @internal_nets, @portal_ints ) {
          PerlTransHandler => 'pf::web::dispatcher::custom',
          Location     => gen_conf(
              "/" => {
-                 "Order" => "deny,allow",
-                 "Deny" => "from all",
-                 "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Order" => "deny,allow",
+                        "Deny" => "from all",
+                        "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all denied",
+                        "Require"           => "ip $routedNets",
+                        "Require"           => "ip $loadbalancersIp",
+                        "Require"           => "local",
+                    },
+                 },
                  SetHandler => 'modperl',
                  PerlResponseHandler => 'captiveportal',
              },
              "/static" => {
-                 "Order" => "deny,allow",
-                 "Deny" => "from all",
-                 "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Order" => "deny,allow",
+                        "Deny" => "from all",
+                        "Allow" => "from $routedNets $loadbalancersIp 127.0.0.1 ",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all denied",
+                        "Require"           => "ip $routedNets",
+                        "Require"           => "ip $loadbalancersIp",
+                        "Require"           => "local",
+                    },
+                 },
                  SetHandler => 'default-handler',
              },
              "/common" => {
-                 "Allow" => "from all",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Allow" => "from all",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all granted",
+                    },
+                 },
                  SetHandler => 'default-handler',
              },
              "/content" => {
-                "Allow" => "from all",
+                 IfVersion => {
+                    "< 2.4" => {
+                        "Allow" => "from all",
+                    },
+                    ">= 2.4" => {
+                        "Require"           => "all granted",
+                    },
+                 },
              },
              "/hook/billing" => {
                 "SetHandler" => "modperl",
