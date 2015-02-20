@@ -98,8 +98,10 @@ Requires: net-tools
 Requires: sscep
 Requires: p0f
 Requires: net-snmp >= 5.3.2.2
-Requires: mysql, mysql-server, perl(DBD::mysql)
 Requires: perl >= %{perl_version}
+%{?el6:Requires: mysql, mysql-server}
+%{?el7:Requires: mariadb, mariadb-server}
+Requires: perl(DBD::mysql)
 # replaces the need for perl-suidperl which was deprecated in perl 5.12 (Fedora 14)
 Requires(pre): %{real_name}-pfcmd-suid
 Requires(pre): %{real_name}-ntlm-wrapper
@@ -161,8 +163,8 @@ Requires: perl(Net::Pcap) >= 0.16
 # pfdhcplistener
 Requires: perl(NetPacket) >= 1.2.0
 # pfdns
-Requires: perl(Net::DNS)
-Requires: perl(Net::DNS::Nameserver)
+%{?el6:Requires: perl(Net::DNS) = 0.65, perl(Net::DNS::Nameserver)  = 749}
+%{?el7:Requires: perl(Net::DNS), perl(Net::DNS::Nameserver)}
 # RADIUS CoA support
 Requires: perl(Net::Radius::Dictionary), perl(Net::Radius::Packet)
 # SNMP to network hardware
