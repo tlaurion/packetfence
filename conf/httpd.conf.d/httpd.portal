@@ -3,6 +3,9 @@
     LoadModule version_module /usr/lib/apache2/modules/mod_version.so
   </IfModule>
   <IfVersion >= 2.4>
+    <IfModule !mod_unixd.c>
+      LoadModule unixd_module /usr/lib/apache2/modules/mod_unixd.so
+    </IfModule>
     <IfModule !mod_authz_core.c>
       LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
     </IfModule>
@@ -73,6 +76,9 @@
     LoadModule version_module modules/mod_version.so
   </IfModule>
   <IfVersion >= 2.4>
+    <IfModule !mod_unixd.c>
+      LoadModule unixd_module modules/mod_unixd.so
+    </IfModule>
     <IfModule !mod_authz_core.c>
       LoadModule authz_core_module modules/mod_authz_core.so
     </IfModule>
