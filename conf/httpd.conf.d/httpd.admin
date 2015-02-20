@@ -2,6 +2,9 @@
 
 #Debian specific
 <IfDefine debian>
+  <IfModule !mod_version.c>
+    LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+  </IfModule>
   <IfVersion >= 2.4>
     <IfModule !mod_authz_core.c>
       LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
@@ -47,6 +50,9 @@
 
 #RHEL specific
 <IfDefine rhel>
+  <IfModule !mod_version.c>
+    LoadModule version_module modules/mod_version.so
+  </IfModule>
   <IfVersion >= 2.4>
     <IfModule !mod_authz_core.c>
       LoadModule authz_core_module modules/mod_authz_core.so
