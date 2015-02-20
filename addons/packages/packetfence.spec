@@ -161,8 +161,8 @@ Requires: perl(Net::Pcap) >= 0.16
 # pfdhcplistener
 Requires: perl(NetPacket) >= 1.2.0
 # pfdns
-Requires: perl(Net::DNS) = 0.65
-Requires: perl(Net::DNS::Nameserver) = 749
+Requires: perl(Net::DNS)
+Requires: perl(Net::DNS::Nameserver)
 # RADIUS CoA support
 Requires: perl(Net::Radius::Dictionary), perl(Net::Radius::Packet)
 # SNMP to network hardware
@@ -443,6 +443,7 @@ done
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/webadmin_cache
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/control
 %{__install} -d $RPM_BUILD_ROOT/etc/sudoers.d
+%{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/ssl_mutex
 touch $RPM_BUILD_ROOT/usr/local/pf/var/cache_control
 cp Makefile $RPM_BUILD_ROOT/usr/local/pf/
 cp -r bin $RPM_BUILD_ROOT/usr/local/pf/
