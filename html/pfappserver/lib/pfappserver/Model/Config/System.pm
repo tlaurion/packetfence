@@ -13,6 +13,7 @@ Catalyst Model.
 use Moose;
 use namespace::autoclean;
 use Net::Netmask;
+use Linux::Distribution;
 
 use pf::log;
 use pf::error qw(is_error is_success);
@@ -128,8 +129,17 @@ sub start_mysqld_service {
         return ($STATUS::OK, $status_msg);
     }
 
+    my $linux = Linux::Distribution->new;
+    my $distro = $linux->distribution_name();
+    my $version = $linux->distribution_version();
+
     my $mysql_script = 'mysqld';
     $mysql_script = 'mysql' if ( -e "/etc/init.d/mysql" );
+    if ( ( ($distro eq 'centos') || ($distro eq 'redhat') ) && ($version gt 7)) {
+        $mysql_script = 'mariadb';
+    }
+
+    # please keep LANG=C in case we need to fetch the output of the command
     my $cmd = "setsid sudo service $mysql_script start 2>&1";
     $logger->debug("Starting mysqld service: $cmd");
     $status = pf_run($cmd);
