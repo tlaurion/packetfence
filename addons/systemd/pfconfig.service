@@ -5,8 +5,6 @@ After=network.target
 [Service]
 Type=forking
 PIDFile=/usr/local/pf/var/run/pfconfig.pid
-User=pf
-Group=pf
 ExecStart=/usr/local/pf/sbin/pfconfig -d
 ExecStop=/bin/systemctl kill pfconfig.service
 

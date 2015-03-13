@@ -4,8 +4,6 @@ After=network.target pfconfig.service mariadb.service
 
 [Service]
 Type=forking
-User=pf
-Group=pf
 ExecStart=/usr/local/pf/bin/pfcmd service pf start
 ExecStop=/usr/local/pf/bin/pfcmd service pf stop
 
