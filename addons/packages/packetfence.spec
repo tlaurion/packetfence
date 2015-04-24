@@ -868,7 +868,7 @@ fi
 %dir                    /usr/local/pf/conf/%endif
 %if 0%{?el7}
 %attr(0755, root, root) /usr/lib/systemd/system/pfconfig.service
-%endiflocale/en/LC_MESSAGES
+%endif
 %config(noreplace)      /usr/local/pf/conf/locale/en/LC_MESSAGES/packetfence.po
 %config(noreplace)      /usr/local/pf/conf/locale/en/LC_MESSAGES/packetfence.mo
 %dir                    /usr/local/pf/conf/locale/es
