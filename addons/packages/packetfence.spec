@@ -429,7 +429,7 @@ done
 %{__install} -D -m0755 packetfence.init $RPM_BUILD_ROOT%{_initrddir}/packetfence
 %endif
 %if 0%{?el7}
-cp -r addons/systemd/packetfence.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence.service
+%{__install} -D -m0755 addons/systemd/packetfence.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence.service
 %endif
 # creating path components that are no longer in the tarball since we moved to git
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/addons
@@ -474,20 +474,30 @@ cp -r sbin $RPM_BUILD_ROOT/usr/local/pf/
 cp -r conf $RPM_BUILD_ROOT/usr/local/pf/
 cp -r raddb $RPM_BUILD_ROOT/usr/local/pf/
 #pfdetect_remote
+%if 0%{?el6}
 mv addons/pfdetect_remote/initrd/pfdetectd $RPM_BUILD_ROOT%{_initrddir}/
+%endif
 mv addons/pfdetect_remote/sbin/pfdetect_remote $RPM_BUILD_ROOT/usr/local/pf/sbin
 mv addons/pfdetect_remote/conf/pfdetect_remote.conf $RPM_BUILD_ROOT/usr/local/pf/conf
 mv packetfence.sudoers $RPM_BUILD_ROOT/etc/sudoers.d/packetfence
 rmdir addons/pfdetect_remote/sbin
+%if 0%{?el7}
+rm addons/pfdetect_remote/initrd/pfdetectd
+%endif
 rmdir addons/pfdetect_remote/initrd
 rmdir addons/pfdetect_remote/conf
 rmdir addons/pfdetect_remote
 #end pfdetect_remote
 #pfarp_remote
+%if 0%{?el6}
 mv addons/pfarp_remote/initrd/pfarp $RPM_BUILD_ROOT%{_initrddir}/
+%endif
 mv addons/pfarp_remote/sbin/pfarp_remote $RPM_BUILD_ROOT/usr/local/pf/sbin
 mv addons/pfarp_remote/conf/pfarp_remote.conf $RPM_BUILD_ROOT/usr/local/pf/conf
 rmdir addons/pfarp_remote/sbin
+%if 0%{?el7}
+rm addons/pfarp_remote/initrd/pfarp
+%endif
 rmdir addons/pfarp_remote/initrd
 rmdir addons/pfarp_remote/conf
 rmdir addons/pfarp_remote
@@ -514,7 +524,7 @@ cp -r UPGRADE.old $RPM_BUILD_ROOT/usr/local/pf/
 %{__install} -D -m0755 packetfence-redis-cache.init $RPM_BUILD_ROOT%{_initrddir}/packetfence-redis-cache
 %endif
 %if 0%{?el7}
-cp -r addons/systemd/pfconfig.service $RPM_BUILD_ROOT/usr/lib/systemd/system/
+%{__install} -D -m0755 addons/systemd/pfconfig.service $RPM_BUILD_ROOT/usr/lib/systemd/system/
 %endif
 #end pfconfig
 # logfiles
@@ -865,7 +875,7 @@ fi
 %config(noreplace)      /usr/local/pf/conf/locale/de/LC_MESSAGES/packetfence.po
 %config(noreplace)      /usr/local/pf/conf/locale/de/LC_MESSAGES/packetfence.mo
 %dir                    /usr/local/pf/conf/locale/en
-%dir                    /usr/local/pf/conf/%endif
+%dir                    /usr/local/pf/conf/locale/en/LC_MESSAGES
 %if 0%{?el7}
 %attr(0755, root, root) /usr/lib/systemd/system/pfconfig.service
 %endif
@@ -1211,7 +1221,9 @@ fi
 # Remote snort sensor file list
 %files -n %{real_name}-remote-snort-sensor
 %defattr(-, pf, pf)
+%if 0%{?el6}
 %attr(0755, root, root) %{_initrddir}/pfdetectd
+%endif
 %dir                    /usr/local/pf
 %dir                    /usr/local/pf/conf
 %config(noreplace)      /usr/local/pf/conf/pfdetect_remote.conf
@@ -1223,7 +1235,9 @@ fi
 # Remote arp sensor file list
 %files -n %{real_name}-remote-arp-sensor
 %defattr(-, pf, pf)
+%if 0%{?el6}
 %attr(0755, root, root) %{_initrddir}/pfarp
+%endif
 %dir                    /usr/local/pf
 %dir                    /usr/local/pf/conf
 %config(noreplace)      /usr/local/pf/conf/pfarp_remote.conf
