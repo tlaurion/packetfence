@@ -44,7 +44,7 @@ Depends: ${misc:Depends}, vlan, make,
  procps,
 # perl basic components
  liblist-moreutils-perl, libwww-perl, libtry-tiny-perl,
- libscalar-list-utils-perl (>= 1.42),
+ libscalar-list-utils-perl,
 # perl uncategorized modules
  libapache-htpasswd-perl, libbit-vector-perl, libtext-csv-perl, libtext-csv-xs-perl,
  libcgi-session-serialize-yaml-perl, libtimedate-perl, libapache-dbi-perl,
@@ -101,7 +101,7 @@ Depends: ${misc:Depends}, vlan, make,
  libdata-serializer-perl,
  libchi-driver-redis-perl,
  libredis-fast-perl,
- libcache-fastmmap-perl, libmoo-perl (=1.004002-1), libterm-size-any-perl,
+ libcache-fastmmap-perl, libmoo-perl, libterm-size-any-perl,
 # packaging workaround (we don't require it but something in catalyst seem to do)
  libmodule-install-perl,
 # i18n
