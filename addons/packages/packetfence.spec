@@ -164,8 +164,9 @@ Requires: perl(Net::Pcap) >= 0.16
 # pfdhcplistener
 Requires: perl(NetPacket) >= 1.2.0
 # pfdns
-%{?el6:Requires: perl(Net::DNS) = 0.65, perl(Net::DNS::Nameserver)  = 749}
-%{?el7:Requires: perl(Net::DNS), perl(Net::DNS::Nameserver), perl(Module::Metadata)}
+Requires: perl(Net::DNS), perl(Net::DNS::Nameserver), perl(Module::Metadata)
+#%{?el6:Requires: perl(Net::DNS) = 0.65, perl(Net::DNS::Nameserver)  = 749}
+#%{?el7:Requires: perl(Net::DNS), perl(Net::DNS::Nameserver), perl(Module::Metadata)}
 # RADIUS CoA support
 Requires: perl(Net::Radius::Dictionary), perl(Net::Radius::Packet)
 # SNMP to network hardware
@@ -266,7 +267,7 @@ Requires: perl(IO::Socket::INET6)
 Requires: perl(IO::Interface)
 Requires: perl(Time::Period)
 Requires: perl(Time::Piece)
-Requires: iproute >= 3.0.0, samba < 4, krb5-workstation
+Requires: iproute >= 3.0.0, samba, krb5-workstation
 Requires: perl(Linux::Distribution)
 # configuration-wizard
 Requires: iproute, vconfig
