@@ -12,7 +12,7 @@ Package: packetfence
 Architecture: all
 # TODO: We can probably move these in Depends since 3.5.0 (managed RADIUS feature)
 Pre-Depends:  ca-certificates, freeradius (>= 3.0.10), freeradius-ldap, freeradius-postgresql,
- freeradius-mysql, freeradius-krb5, dhcp3-server | isc-server-server, ca-certificates, winbind,
+ freeradius-mysql, freeradius-krb5, dhcp3-server | isc-dhcp-server, ca-certificates, winbind,
  packetfence-pfcmd-suid (>= ${Source-Version}), packetfence-config (>= ${Source-Version}), packetfence-ntlm-wrapper (>= ${Source-Version}),
  fingerbank (>= 2.1.0), fingerbank (<< 3.0.0), packetfence-redis-cache (>= ${Source-Version}),
 # wmi
@@ -96,7 +96,7 @@ Depends: ${misc:Depends}, vlan, make,
  libcatalyst-perl (>= 5.90011), libcatalyst-modules-perl,
  libauthen-htpasswd-perl, libcatalyst-authentication-credential-http-perl, 
  libcatalyst-authentication-store-htpasswd-perl, libcatalyst-plugin-unicode-encoding-perl,
- libcatalyst-view-tt-perl (>= 0.37), libhtml-formfu-perl, libjson-perl, libjson-maybexs-perl,libjson-xs-perl (>= 3),
+ libcatalyst-view-tt-perl (>= 0.37), libhtml-formfu-perl, libjson-perl, libjson-maybexs-perl,libjson-xs-perl,
  libsort-naturally-perl, libhtml-formhandler-perl, libchi-perl (>=0.59),
  libdata-serializer-perl,
  libchi-driver-redis-perl,
@@ -147,7 +147,7 @@ Description: documentation for packetfence
 
 Package: packetfence-remote-snort-sensor
 Architecture: all
-Depends: ${misc:Depends}, snort | suricata, libfile-tail-perl, libconfig-inifiles-perl (>= 2.88),
+Depends: ${misc:Depends}, snort | suricata, libfile-tail-perl, libconfig-inifiles-perl,
  libio-socket-ssl-perl, libxml-parser-perl, libcrypt-ssleay-perl,
 # FIXME track what requires the conveyor stuff and identify it. If we can, get rid of it.
  libsoap-lite-perl, libthread-conveyor-monitored-perl, libthread-conveyor-perl
