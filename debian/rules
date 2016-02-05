@@ -157,7 +157,7 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installmime
 #	dh_python
-	dh_installsystemd
+	dh_systemd
 #	dh_installcron
 #	dh_installinfo
 	dh_installman
