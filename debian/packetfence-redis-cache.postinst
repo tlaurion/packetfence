@@ -29,7 +29,7 @@ case "$1" in
 	set +e
 	for service in redis-server; do
 
-		if [ -e "/etc/init.d/"$service ] ; then
+		if [ -e "/etc/systemd/system/"$service ] ; then
 			invoke-rc.d $service stop  > /dev/null 2>&1
 			if [ -e /etc/lsb-release ]; then
 				update-rc.d -f $service remove > /dev/null 2>&1
