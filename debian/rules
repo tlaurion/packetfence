@@ -93,6 +93,8 @@ install: build
 	install -d -m2770 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache/configfilesdata
 	install -d -m0700 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/ssl_mutex
 	touch $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache_control
+	#Create system folder in systemd
+	install -d -m0700 /etc/systemd/system
 	#Configurator integration
 	install -m0755 $(CURDIR)/addons/systemd/packetfence.service /etc/systemd/system
 	install -d -m0700 $(CURDIR)/debian/packetfence/etc/default
@@ -155,7 +157,7 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installmime
 #	dh_python
-	dh_installinit
+	dh_installsystemd
 #	dh_installcron
 #	dh_installinfo
 	dh_installman
