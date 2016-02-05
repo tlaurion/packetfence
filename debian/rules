@@ -93,10 +93,8 @@ install: build
 	install -d -m2770 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache/configfilesdata
 	install -d -m0700 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/ssl_mutex
 	touch $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache_control
-	#Create system folder under /usr/lib/systemd
-	install -d -m0700 /usr/lib/systemd/system
 	#Configurator integration
-	install -m0600 $(CURDIR)/addons/systemd/packetfence.service /usr/lib/systemd/system
+	install -m0600 $(CURDIR)/addons/systemd/packetfence.service /usr/lib/systemd
 	install -d -m0700 $(CURDIR)/debian/packetfence/etc/default
 	#Sudoer
 	install -oroot -groot -d -m0750 $(CURDIR)/debian/packetfence/etc/sudoers.d
@@ -124,13 +122,13 @@ install: build
 	mv bin/ntlm_auth_wrapper $(CURDIR)/debian/packetfence-ntlm-wrapper$(PREFIX)/$(NAME)/bin
 	# packetfence-config
 	install -d $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/sbin
-	install -m0600 $(CURDIR)/addons/systemd/pfconfig.service /usr/lib/systemd/system
+	install -m0600 $(CURDIR)/addons/systemd/pfconfig.service /usr/lib/systemd
 	install -d -m0700 $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/conf
 	install -d -m2770 $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/var/cache/pfconfig
 	install -m0755 sbin/pfconfig $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/sbin
 	install -m0600 conf/pfconfig.conf $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/conf
 	# packetfence-redis-cache
-	install -m0600 $(CURDIR)/addons/systemd/packetfence-redis-cache.service /usr/lib/systemd/system
+	install -m0600 $(CURDIR)/addons/systemd/packetfence-redis-cache.service /usr/lib/systemd
 	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/conf
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/logs
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/var/redis_cache
