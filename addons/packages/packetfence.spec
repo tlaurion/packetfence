@@ -107,7 +107,7 @@ Requires(pre): %{real_name}-pfcmd-suid
 Requires(pre): %{real_name}-ntlm-wrapper
 Requires: perl(Bit::Vector)
 Requires: perl(CGI::Session), perl(CGI::Session::Driver::chi) >= 1.0.3, perl(JSON) >= 2.90, perl(JSON::MaybeXS), perl(JSON::XS) >= 3
-%{?el7:Requires: perl-Switch}
+%{?el7:Requires: perl-Switch, perl-Locale-Codes}
 Requires: perl(Apache2::Request)
 Requires: perl(Apache::Session)
 Requires: perl(Class::Accessor)
@@ -431,6 +431,7 @@ done
 %endif
 %if 0%{?el7}
 %{__install} -D -m0755 addons/systemd/packetfence.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence.service
+%{__install} -D -m0755 addons/systemd/packetfence-redis-cache.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence-redis-cache.service
 %endif
 # creating path components that are no longer in the tarball since we moved to git
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/addons
@@ -444,6 +445,7 @@ done
 %{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/cache
 %{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/redis_cache
 %{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/redis_queue
+%{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/ssl_mutex
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/conf
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/dhcpd
 %{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/run
