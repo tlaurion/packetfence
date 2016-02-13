@@ -123,7 +123,7 @@ PerlSwitches -I/usr/local/pf/html/pfappserver/lib
 PerlPostConfigRequire /usr/local/pf/lib/pf/web/aaa_modperl_require.pl
 PerlLoadModule pf::WebAPI
 PerlLoadModule pf::WebAPI::InitHandler
-PerlPostConfigHandler pf::WebAPI::InitHandler::post_config
+#PerlPostConfigHandler pf::WebAPI::InitHandler::post_config
 
 <IfVersion >= 2.4>
   Mutex posixsem default

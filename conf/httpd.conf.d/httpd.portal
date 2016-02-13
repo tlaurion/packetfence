@@ -157,7 +157,7 @@ PerlLoadModule captiveportal
 PerlLoadModule pf::web::dispatcher
 PerlLoadModule pf::WebAPI::InitHandler
 PerlLoadModule pf::web::billinghook
-PerlPostConfigHandler pf::WebAPI::InitHandler::post_config
+#PerlPostConfigHandler pf::WebAPI::InitHandler::post_config
 # The TransHandler handles the 'captive-portal' core piece redirecting to the
 # portal if the URL is not otherwised allowed by passthrough or part of the
 # portal itself.
