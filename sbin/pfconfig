@@ -67,7 +67,7 @@ my $socket_path = $args{s};
 unlink($socket_path);
 
 #Ensure that the file permissions of the socket is correct 0770
-umask(0007);
+umask(0000);
 
 my $listner = IO::Socket::UNIX->new(
    Type   => SOCK_STREAM,
