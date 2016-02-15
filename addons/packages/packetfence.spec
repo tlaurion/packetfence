@@ -248,7 +248,7 @@ Requires: perl(CHI) >= 0.59
 Requires: perl(Data::Serializer)
 Requires: perl(Data::Structure::Util)
 Requires: perl(Data::Swap)
-Requires: perl(HTML::FormHandler) = 0.40013
+Requires: perl(HTML::FormHandler)
 Requires: perl(Redis::Fast)
 Requires: perl(CHI::Driver::Redis)
 Requires: perl(File::Flock)
@@ -303,8 +303,8 @@ Requires: perl(Test::NoWarnings)
 Requires: perl(Net::UDP)
 # For managing the number of connections per device
 Requires: mod_qos
-Requires: %{real_name}-config = %{ver}
-Requires: %{real_name}-pfcmd-suid = %{ver}
+Requires: %{real_name}-config = %{version}
+Requires: %{real_name}-pfcmd-suid = %{version}
 Requires: haproxy >= 1.5, keepalived >= 1.2
 Requires: fingerbank >= 2.1.0, fingerbank < 3.0.0
 Requires: perl(File::Tempdir)
