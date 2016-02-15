@@ -521,13 +521,14 @@ cp -r README $RPM_BUILD_ROOT/usr/local/pf/
 cp -r README.network-devices $RPM_BUILD_ROOT/usr/local/pf/
 cp -r UPGRADE.asciidoc $RPM_BUILD_ROOT/usr/local/pf/
 cp -r UPGRADE.old $RPM_BUILD_ROOT/usr/local/pf/
-#pfconfigi rhel6
+#pfconfig rhel6
 %if 0%{?el6}
 %{__install} -D -m0755 addons/pfconfig/pfconfig.init $RPM_BUILD_ROOT%{_initrddir}/packetfence-config
 %{__install} -D -m0755 packetfence-redis-cache.init $RPM_BUILD_ROOT%{_initrddir}/packetfence-redis-cache
 %endif
 %if 0%{?el7}
-%{__install} -D -m0755 addons/systemd/pfconfig.service $RPM_BUILD_ROOT/usr/lib/systemd/system/
+%{__install} -D -m0755 addons/systemd/packetfence-config.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence-config.service
+%{__install} -D -m0755 addons/systemd/packetfence-redis-cache.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence-redis-cache.service
 %endif
 #end pfconfig
 # logfiles
@@ -620,6 +621,7 @@ echo "Adding PacketFence startup script"
 %endif
 %if 0%{?el7}
 /sbin/systemctl enable packetfence
+/sbin/systemctl enable packetfence-redis-cache
 %endif
 
 #Check if log files exist and create them with the correct owner
@@ -727,7 +729,7 @@ echo "Adding PacketFence config startup script"
 /sbin/chkconfig --add packetfence-config
 %endif
 %if 0%{?el7}
-/sbin/systemd enable pfconfig
+/sbin/systemctl enable packetfence-config
 %endif
 %preun -n %{real_name}
 if [ $1 -eq 0 ] ; then
@@ -801,6 +803,7 @@ fi
 %endif
 %if 0%{?el7}
 %attr(0755, root, root) /usr/lib/systemd/system/packetfence.service
+%attr(0755, root, root) /usr/lib/systemd/system/packetfence-redis-cache.service
 %endif
 %dir                    %{_sysconfdir}/logrotate.d
 %dir %attr(0750,root,root) %{_sysconfdir}/sudoers.d
@@ -880,7 +883,7 @@ fi
 %dir                    /usr/local/pf/conf/locale/en
 %dir                    /usr/local/pf/conf/locale/en/LC_MESSAGES
 %if 0%{?el7}
-%attr(0755, root, root) /usr/lib/systemd/system/pfconfig.service
+%attr(0755, root, root) /usr/lib/systemd/system/packetfence-config.service
 %endif
 %config(noreplace)      /usr/local/pf/conf/locale/en/LC_MESSAGES/packetfence.po
 %config(noreplace)      /usr/local/pf/conf/locale/en/LC_MESSAGES/packetfence.mo
@@ -1261,7 +1264,7 @@ fi
 %attr(0755, root, root) %{_initrddir}/packetfence-config
 %endif
 %if 0%{?el7}
-%attr(0755, root, root) /usr/lib/systemd/system/pfconfig.service
+%attr(0755, root, root) /usr/lib/systemd/system/packetfence-config.service
 %endif
 %dir                    /usr/local/pf
 %dir                    /usr/local/pf/conf
