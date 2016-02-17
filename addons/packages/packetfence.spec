@@ -807,7 +807,9 @@ fi
 %attr(0755, root, root) /usr/lib/systemd/system/packetfence.service
 %attr(0755, root, root) /usr/lib/systemd/system/packetfence-redis-cache.service
 %endif
+%if 0%{?el6}
 %dir                    %{_sysconfdir}/logrotate.d
+%endif
 %dir %attr(0750,root,root) %{_sysconfdir}/sudoers.d
 %config %attr(0440,root,root) %{_sysconfdir}/sudoers.d/packetfence
 %config                 %{_sysconfdir}/logrotate.d/packetfence
