@@ -622,6 +622,7 @@ echo "Adding PacketFence startup script"
 /sbin/chkconfig --add packetfence-redis-cache
 %endif
 %if 0%{?el7}
+/sbin/systemctl enable mariadb
 /sbin/systemctl enable packetfence
 /sbin/systemctl enable packetfence-redis-cache
 %endif
