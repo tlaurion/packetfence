@@ -281,7 +281,7 @@ Requires: python-django, python-django-tagging, pyparsing
 Requires: MySQL-python
 Requires: python-carbon, python-whisper
 Requires: graphite-web >= 0.9.12-25
-%{?el7:Requires: collectd >= 5.5, collectd-mysql, collectd-apache, collectd-drbd, collectd-dns, collectd-iptables, collectd-openldap, collectd-redis}
+%{?el7:Requires: samba-winbind, collectd >= 5.5, collectd-mysql, collectd-apache, collectd-drbd, collectd-dns, collectd-iptables, collectd-openldap, collectd-redis}
 %{?el6:Requires: collectd >= 5.0, collectd-mysql, libcollectdclient, collectd-apache}
 Requires: freeradius-radsniff >= 3.0.0
 %{?el6:Requires: node}
@@ -433,6 +433,7 @@ done
 %endif
 %if 0%{?el7}
 %{__install} -D -m0755 addons/systemd/packetfence.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence.service
+%{__install} -D -m0755 addons/systemd/packetfence@.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence@.service
 %{__install} -D -m0755 addons/systemd/packetfence-redis-cache.service $RPM_BUILD_ROOT/usr/lib/systemd/system/packetfence-redis-cache.service
 %endif
 # creating path components that are no longer in the tarball since we moved to git
@@ -709,18 +710,22 @@ sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 echo "Starting PacketFence Administration GUI..."
 #removing old cache
 rm -rf /usr/local/pf/var/cache/
+%if 0%{?el6}
 /sbin/service packetfence-redis-cache restart
-/sbin/service packetfence-config restart 
-/usr/local/pf/bin/pfcmd configreload
+/sbin/service packetfence-config restart
 /sbin/service packetfence start httpd.admin
+%endif
+/usr/local/pf/bin/pfcmd configreload
+%if 0%{?el7}
+/bin/systemctl start packetfence-redis-cache
+/bin/systemctl start packetfence-config
+/bin/systemctl start packetfence@httpd.admin
+/usr/bin/firewall-cmd --zone=public --add-port=1443/tcp
+%endif
 
 echo Installation complete
 echo "  * Please fire up your Web browser and go to https://@ip_packetfence:1443/configurator to complete your PacketFence configuration."
 echo "  * Please stop your iptables service if you don't have access to configurator."
-# Allow admin GUI
-%if 0%{?el7}
-/usr/bin/firewall-cmd --zone=public --add-port=1443/tcp
-%endif
 
 %post -n %{real_name}-remote-snort-sensor
 echo "Adding PacketFence remote Snort Sensor startup script"
@@ -739,6 +744,7 @@ echo "Adding PacketFence config startup script"
 %if 0%{?el7}
 /bin/systemctl enable packetfence-config
 %endif
+
 %preun -n %{real_name}
 if [ $1 -eq 0 ] ; then
         /sbin/service packetfence stop &>/dev/null || :
@@ -811,6 +817,7 @@ fi
 %endif
 %if 0%{?el7}
 %attr(0755, root, root) /usr/lib/systemd/system/packetfence.service
+%attr(0755, root, root) /usr/lib/systemd/system/packetfence@.service
 %attr(0755, root, root) /usr/lib/systemd/system/packetfence-redis-cache.service
 %endif
 %if 0%{?el6}
