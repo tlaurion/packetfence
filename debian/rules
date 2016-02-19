@@ -158,6 +158,7 @@ binary-arch: build install
 #	dh_installmime
 #	dh_python
 	dh_installinit
+	dh_systemd_enable
 #	dh_installcron
 #	dh_installinfo
 	dh_installman
