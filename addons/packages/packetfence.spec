@@ -690,7 +690,12 @@ else
 fi
 
 # dashboard symlinks and permissions
+%if 0%{?el6}
 ln -sf /usr/local/pf/var/conf/local_settings.py /usr/lib/python2.6/site-packages/graphite/local_settings.py
+%endif
+%if 0%{?el7}
+ln -sf /usr/local/pf/var/conf/local_settings.py /usr/lib/python2.7/site-packages/graphite/local_settings.py
+%endif
 chmod g+w /var/lib/carbon
 chmod g+w /var/lib/graphite-web
 
