@@ -622,9 +622,9 @@ echo "Adding PacketFence startup script"
 /sbin/chkconfig --add packetfence-redis-cache
 %endif
 %if 0%{?el7}
-/sbin/systemctl enable mariadb
-/sbin/systemctl enable packetfence
-/sbin/systemctl enable packetfence-redis-cache
+/bin/systemctl enable mariadb
+/bin/systemctl enable packetfence
+/bin/systemctl enable packetfence-redis-cache
 %endif
 
 #Check if log files exist and create them with the correct owner
@@ -732,7 +732,7 @@ echo "Adding PacketFence config startup script"
 /sbin/chkconfig --add packetfence-config
 %endif
 %if 0%{?el7}
-/sbin/systemctl enable packetfence-config
+/bin/systemctl enable packetfence-config
 %endif
 %preun -n %{real_name}
 if [ $1 -eq 0 ] ; then
