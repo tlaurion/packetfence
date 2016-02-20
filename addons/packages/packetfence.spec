@@ -715,13 +715,13 @@ rm -rf /usr/local/pf/var/cache/
 /sbin/service packetfence-config restart
 /sbin/service packetfence start httpd.admin
 %endif
-/usr/local/pf/bin/pfcmd configreload
 %if 0%{?el7}
 /bin/systemctl start packetfence-redis-cache
 /bin/systemctl start packetfence-config
 /bin/systemctl start packetfence@httpd.admin
 /usr/bin/firewall-cmd --zone=public --add-port=1443/tcp
 %endif
+/usr/local/pf/bin/pfcmd configreload
 
 echo Installation complete
 echo "  * Please fire up your Web browser and go to https://@ip_packetfence:1443/configurator to complete your PacketFence configuration."
