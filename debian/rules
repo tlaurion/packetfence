@@ -92,13 +92,9 @@ install: build
 	install -d -m2770 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache/configfiles
 	install -d -m2770 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache/configfilesdata
 	install -d -m0700 $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/ssl_mutex
-	install -d -m0700 $(CURDIR)/debian/packetfence/lib/systemd/system
-	install -d -m0700 $(CURDIR)/debian/packetfence-config/lib/systemd/system
-	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
 	touch $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/var/cache_control
-	#create systemd under lib
-	install -d -m0700 /lib/systemd/system
 	#Configurator integration
+	install -d -m0700 $(CURDIR)/debian/packetfence/lib/systemd/system
 	install -m0700 $(CURDIR)/addons/systemd/packetfence.service $(CURDIR)/debian/packetfence/lib/systemd/system
 	install -d -m0700 $(CURDIR)/debian/packetfence/etc/default
 	#Sudoer
@@ -127,17 +123,18 @@ install: build
 	mv bin/ntlm_auth_wrapper $(CURDIR)/debian/packetfence-ntlm-wrapper$(PREFIX)/$(NAME)/bin
 	# packetfence-config
 	install -d $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/sbin
+	install -d -m0700 $(CURDIR)/debian/packetfence-config/lib/systemd/system
 	install -m0700 $(CURDIR)/addons/systemd/packetfence-config.service $(CURDIR)/debian/packetfence-config/lib/systemd/system
 	install -d -m0700 $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/conf
 	install -d -m2770 $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/var/cache/pfconfig
 	install -m0755 sbin/pfconfig $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/sbin
 	install -m0600 conf/pfconfig.conf $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/conf
 	# packetfence-redis-cache
+	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
 	install -m0700 $(CURDIR)/addons/systemd/packetfence-redis-cache.service $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
 	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/conf
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/logs
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/var/redis_cache
-	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/var/run/redis
 	install -m0600 conf/redis_cache.conf $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/conf
 	echo $(C_ID) > $(CURDIR)/debian/packetfence$(PREFIX)/$(NAME)/conf/git_commit_id
 	#Create our dhcpd.leases
