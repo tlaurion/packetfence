@@ -126,7 +126,7 @@ case "$1" in
         invoke-rc.d packetfence-config restart
         # We probably need to have: invoke-rc.d packetfence reload config
         #/usr/local/pf/bin/pfcmd configreload
-        invoke-rc.d packetfence start httpd.admin
+        systemctl packetfence@httpd.admin start
 
         echo Installation complete
         echo "* Please fire up your Web browser and go to https://@ip_packetfence:1443/configurator to complete your PacketFence configuration."
