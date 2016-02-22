@@ -2,6 +2,26 @@
 
 #Debian specific
 <IfDefine debian>
+  <IfModule !mod_version.c>
+    LoadModule version_module /usr/lib/apache2/modules/mod_version.so
+  </IfModule>
+  <IfVersion >= 2.4>
+    <IfModule !mod_unixd.c>
+      LoadModule unixd_module /usr/lib/apache2/modules/mod_unixd.so
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
+    </IfModule>
+    <IfModule !mod_authn_core.c>
+      LoadModule authn_core_module /usr/lib/apache2/modules/mod_authn_core.so
+    </IfModule>
+    <IfModule !mod_socache_shmcb.c>
+      LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
+    </IfModule>
+    <IfModule !prefork.c>
+      LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
+    </IfModule>
+  </IfVersion>
   <IfModule !mod_perl.c>
     LoadModule perl_module /usr/lib/apache2/modules/mod_perl.so
   </IfModule>
@@ -33,6 +53,26 @@
 
 #RHEL specific
 <IfDefine rhel>
+  <IfModule !mod_version.c>
+    LoadModule version_module modules/mod_version.so
+  </IfModule>
+  <IfVersion >= 2.4>
+    <IfModule !mod_unixd.c>
+      LoadModule unixd_module modules/mod_unixd.so
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      LoadModule authz_core_module modules/mod_authz_core.so
+    </IfModule>
+    <IfModule !mod_authn_core.c>
+      LoadModule authn_core_module modules/mod_authn_core.so
+    </IfModule>
+    <IfModule !prefork.c>
+      LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+    </IfModule>
+    <IfModule !mod_socache_shmcb.c>
+      LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
+    </IfModule>
+  </IfVersion>
   <IfModule !mod_perl.c>
     LoadModule perl_module modules/mod_perl.so
   </IfModule>
@@ -67,7 +107,13 @@ TraceEnable off
 
 PerlSwitches -I/usr/local/pf/lib
 
-AcceptMutex posixsem
+
+<IfVersion >= 2.4>
+  Mutex posixsem default
+</IfVersion>
+<IfVersion < 2.4>
+  AcceptMutex posixsem
+</IfVersion>
 
 TypesConfig /etc/mime.types
 
