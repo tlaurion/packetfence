@@ -132,6 +132,7 @@ install: build
 	# packetfence-redis-cache
 	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
 	install -m0700 $(CURDIR)/addons/systemd/packetfence-redis-cache.service $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
+	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/var/run
 	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/conf
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/logs
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/var/redis_cache
