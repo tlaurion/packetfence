@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 all:
 	@echo "Please chose which documentation to build:"
 	@echo ""
