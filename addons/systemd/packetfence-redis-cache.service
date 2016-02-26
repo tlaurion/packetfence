@@ -1,6 +1,6 @@
 [Unit]
 Description=PacketFence Redis Cache Service
-After=network.target
+After=network.target packetfence-config.target
 
 [Service]
 Type=forking
