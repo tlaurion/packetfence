@@ -1,6 +1,6 @@
 [Unit]
 Description=PacketFence Service
-After=network.target packetfence-config.service packetfence-redis-cache.service mariadb.service
+After=network.target packetfence-config.service packetfence-redis-cache.service
 
 [Service]
 Type=forking
