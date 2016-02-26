@@ -1,6 +1,6 @@
 [Unit]
 Description=PacketFence Redis Cache Service
-After=network.target packetfence-config.target
+After=network.target mariadb.service
 
 [Service]
 Type=forking
