@@ -779,7 +779,7 @@ collectd_binary=/usr/sbin/collectd
 # services.radsniff_binary
 # 
 # Location of the radsniff binary. Only necessary to change if you are not running the pre-packaged version.
-radsniff_binary=/usr/bin/radsniff
+radsniff_binary=/usr/bin/radsniff3
 # 
 # services.p0f_binary
 # 
