@@ -35,7 +35,12 @@ sub executable {
 sub _build_launcher {
     my ($self) = @_;
     my $name = $self->name;
-    return "%1\$s -f $conf_dir/httpd.conf.d/$name -D$OS"
+    if ( ( ($DISTRO eq 'debian') && ($VERSION gt 8)) || ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat')) && ($VERSION gt 7))) {
+        return "%1\$s -f $conf_dir/httpd.conf.d/${name}2-4 -D$OS"
+    }
+    else {
+        return "%1\$s -f $conf_dir/httpd.conf.d/$name -D$OS"
+    }
 }
 
 =head2 generateConfig
