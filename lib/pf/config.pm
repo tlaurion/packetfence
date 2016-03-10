@@ -182,7 +182,7 @@ BEGIN {
         @Profile_Filters %Profiles_Config
         %ConfigFirewallSSO
         $OS
-        $DISTRO $VERSION
+        $DISTRO $DIST_VERSION
         %Doc_Config
         %ConfigRealm
         %ConfigProvisioning
@@ -288,7 +288,7 @@ Readonly::Scalar our $OS => os_detection();
 # OS Version Specific
 Readonly::Scalar our $LINUX => Linux::Distribution->new;
 Readonly::Scalar our $DISTRO => $LINUX->distribution_name();
-Readonly::Scalar our $VERSION => $LINUX->distribution_version();
+Readonly::Scalar our $DIST_VERSION => $LINUX->distribution_version();
 
 # Interface types
 Readonly our $IF_INTERNAL => 'internal';

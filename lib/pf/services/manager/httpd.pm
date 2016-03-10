@@ -35,7 +35,7 @@ sub executable {
 sub _build_launcher {
     my ($self) = @_;
     my $name = $self->name;
-    if ( ( ($DISTRO eq 'debian') && ($VERSION gt 8)) || ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat')) && ($VERSION gt 7))) {
+    if ( ( ($DISTRO eq 'debian') && ($DIST_VERSION gt 8)) || ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat')) && ($DIST_VERSION gt 7))) {
         return "%1\$s -f $conf_dir/httpd.conf.d/${name}2-4 -D$OS"
     }
     else {
@@ -126,7 +126,7 @@ sub generateConfig {
 
     my @config_files;
 
-    if ( ( ($DISTRO eq 'debian') && ($VERSION gt 8)) || ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat')) && ($VERSION gt 7))) {
+    if ( ( ($DISTRO eq 'debian') && ($DIST_VERSION gt 8)) || ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat')) && ($DIST_VERSION gt 7))) {
         @config_files = ( 'captive-portal-common2-4.conf');
     }
     else {
