@@ -5,23 +5,6 @@
   <IfModule !mod_version.c>
     LoadModule version_module /usr/lib/apache2/modules/mod_version.so
   </IfModule>
-  <IfVersion >= 2.4>
-    <IfModule !mod_unixd.c>
-      LoadModule unixd_module /usr/lib/apache2/modules/mod_unixd.so
-    </IfModule>
-    <IfModule !mod_authz_core.c>
-      LoadModule authz_core_module /usr/lib/apache2/modules/mod_authz_core.so
-    </IfModule>
-    <IfModule !mod_authn_core.c>
-      LoadModule authn_core_module /usr/lib/apache2/modules/mod_authn_core.so
-    </IfModule>
-    <IfModule !mod_socache_shmcb.c>
-      LoadModule socache_shmcb_module /usr/lib/apache2/modules/mod_socache_shmcb.so
-    </IfModule>
-    <IfModule !prefork.c>
-      LoadModule mpm_prefork_module /usr/lib/apache2/modules/mod_mpm_prefork.so
-    </IfModule>
-  </IfVersion>
   <IfModule !mod_perl.c>
     LoadModule perl_module /usr/lib/apache2/modules/mod_perl.so
   </IfModule>
@@ -56,23 +39,6 @@
   <IfModule !mod_version.c>
     LoadModule version_module modules/mod_version.so
   </IfModule>
-  <IfVersion >= 2.4>
-    <IfModule !mod_unixd.c>
-      LoadModule unixd_module modules/mod_unixd.so
-    </IfModule>
-    <IfModule !mod_authz_core.c>
-      LoadModule authz_core_module modules/mod_authz_core.so
-    </IfModule>
-    <IfModule !mod_authn_core.c>
-      LoadModule authn_core_module modules/mod_authn_core.so
-    </IfModule>
-    <IfModule !prefork.c>
-      LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
-    </IfModule>
-    <IfModule !mod_socache_shmcb.c>
-      LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
-    </IfModule>
-  </IfVersion>
   <IfModule !mod_perl.c>
     LoadModule perl_module modules/mod_perl.so
   </IfModule>
@@ -105,12 +71,7 @@
 # We don't allow the TRACE HTTP method
 TraceEnable off
 
-<IfVersion >= 2.4>
-  Mutex posixsem default
-</IfVersion>
-<IfVersion < 2.4>
   AcceptMutex posixsem
-</IfVersion>
 
 PerlSwitches -I/usr/local/pf/lib
 PerlSwitches -I/usr/local/pf/html/pfappserver/lib
@@ -191,13 +152,6 @@ $SSLRandomSeed = "startup file:/dev/urandom 1024";
 $SSLRandomSeed = "connect builtin";
 $SSLRandomSeed = "connect file:/dev/urandom 1024";
 
-push @{ $IfVersion{">= 2.4"} },
-  {
-  SSLSessionCache => "shmcb:".$install_dir."/var/ssl_acache(512000)",
-  Mutex => "file:".$install_dir."/var/ssl_mutex ssl-cache",
-  SSLProtocol => "All -SSLv2 -SSLv3",
-  SSLCipherSuite => "EECDH+AES:EDH+AES:-SHA1:EECDH+RC4:EDH+RC4:RC4-SHA:EECDH+AES256:EDH+AES256:AES256-SHA:!aNULL:!eNULL:!EXP:!LOW:!MD5",
-};
 push @{ $IfVersion{"< 2.4"} },
   {
   SSLSessionCache => "shm:".$install_dir."/var/ssl_acache(512000)",
