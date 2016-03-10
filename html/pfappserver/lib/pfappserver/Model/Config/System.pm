@@ -131,7 +131,7 @@ sub start_mysqld_service {
 
     my $mysql_script = 'mysqld';
     $mysql_script = 'mysql' if ( -e "/etc/init.d/mysql" );
-    if ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat') ) && ($VERSION gt 7)) {
+    if ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat') ) && ($DIST_VERSION gt 7)) {
         $mysql_script = 'mariadb';
     }
 
