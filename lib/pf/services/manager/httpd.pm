@@ -22,7 +22,6 @@ use pf::util::apache qw(url_parser);
 use pf::web::constants;
 use pf::authentication;
 use pf::log;
-use Linux::Distribution;
 extends 'pf::services::manager';
 
 has '+launcher' => ( builder => 1, lazy => 1 );
@@ -120,15 +119,13 @@ sub generateConfig {
 
     # TODO we *could* do something smarter and process all of conf/httpd.conf.d/
 
-    my $linux = Linux::Distribution->new;
-    my $distro = $linux->distribution_name();
-    my $version = $linux->distribution_version();
+    my @config_files;
 
-    if ( ( ($distro eq 'debian') && ($version gt 8)) || ( ( ($distro eq 'centos') || ($distro eq 'redhat')) && ($version gt 7))) {
-        my @config_files = ( 'captive-portal-common2-4.conf');
+    if ( ( ($DISTRO eq 'debian') && ($VERSION gt 8)) || ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat')) && ($VERSION gt 7))) {
+        @config_files = ( 'captive-portal-common2-4.conf');
     }
     else {
-        my @config_files = ( 'captive-portal-common.conf');
+        @config_files = ( 'captive-portal-common.conf');
     }
     foreach my $config_file (@config_files) {
         $logger->info("generating $generated_conf_dir/$config_file");
