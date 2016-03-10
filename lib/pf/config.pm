@@ -182,7 +182,7 @@ BEGIN {
         @Profile_Filters %Profiles_Config
         %ConfigFirewallSSO
         $OS
-        $DISTRO $LINUX $VERSION
+        $DISTRO $VERSION
         %Doc_Config
         %ConfigRealm
         %ConfigProvisioning

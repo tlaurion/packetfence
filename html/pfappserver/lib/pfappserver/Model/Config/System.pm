@@ -13,7 +13,7 @@ Catalyst Model.
 use Moose;
 use namespace::autoclean;
 use Net::Netmask;
-use Linux::Distribution;
+use pf::config;
 
 use pf::log;
 use pf::error qw(is_error is_success);
@@ -129,13 +129,9 @@ sub start_mysqld_service {
         return ($STATUS::OK, $status_msg);
     }
 
-    my $linux = Linux::Distribution->new;
-    my $distro = $linux->distribution_name();
-    my $version = $linux->distribution_version();
-
     my $mysql_script = 'mysqld';
     $mysql_script = 'mysql' if ( -e "/etc/init.d/mysql" );
-    if ( ( ($distro eq 'centos') || ($distro eq 'redhat') ) && ($version gt 7)) {
+    if ( ( ($DISTRO eq 'centos') || ($DISTRO eq 'redhat') ) && ($VERSION gt 7)) {
         $mysql_script = 'mariadb';
     }
 
