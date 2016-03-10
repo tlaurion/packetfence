@@ -22,6 +22,7 @@ use pf::util::apache qw(url_parser);
 use pf::web::constants;
 use pf::authentication;
 use pf::log;
+use Linux::Distribution;
 extends 'pf::services::manager';
 
 has '+launcher' => ( builder => 1, lazy => 1 );
@@ -118,7 +119,17 @@ sub generateConfig {
     parse_template( \%tags, "$conf_dir/httpd.conf.d/ssl-certificates.conf", "$generated_conf_dir/ssl-certificates.conf", "#" );
 
     # TODO we *could* do something smarter and process all of conf/httpd.conf.d/
-    my @config_files = ( 'captive-portal-common.conf');
+
+    my $linux = Linux::Distribution->new;
+    my $distro = $linux->distribution_name();
+    my $version = $linux->distribution_version();
+
+    if ( ( ($distro eq 'debian') && ($version gt 8)) || ( ( ($distro eq 'centos') || ($distro eq 'redhat')) && ($version gt 7))) {
+        my @config_files = ( 'captive-portal-common2-4.conf');
+    }
+    else {
+        my @config_files = ( 'captive-portal-common.conf');
+    }
     foreach my $config_file (@config_files) {
         $logger->info("generating $generated_conf_dir/$config_file");
         parse_template(\%tags, "$conf_dir/httpd.conf.d/$config_file", "$generated_conf_dir/$config_file");
