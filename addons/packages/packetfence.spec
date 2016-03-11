@@ -553,17 +553,6 @@ if [ ! -h "$RPM_BUILD_ROOT/usr/local/pf/db/pf_graphite-schema.sql" ]; then
     ln -f -s $VERSIONSQL ./pf_graphite-schema.sql
 fi
 
-#httpd.conf symlink
-#We dropped support for pre 2.2.0 but keeping the symlink trick alive since Apache 2.4 is coming
-cd $RPM_BUILD_ROOT/usr/local/pf/conf
-#ln -s httpd.conf.apache22 ./httpd.conf
-#if (/usr/sbin/httpd -v | egrep 'Apache/2\.[2-9]\.' > /dev/null)
-#then
-#  ln -s httpd.conf.apache22 ./httpd.conf
-#else
-#  ln -s httpd.conf.pre_apache22 ./httpd.conf
-#fi
-
 #radius sites-enabled symlinks
 #We standardize the way to use site-available/sites-enabled for the RADIUS server
 cd $RPM_BUILD_ROOT/usr/local/pf/raddb/sites-enabled
@@ -1008,12 +997,19 @@ fi
                         /usr/local/pf/conf/haproxy.conf.example
 %dir                    /usr/local/pf/conf/httpd.conf.d
 %config                 /usr/local/pf/conf/httpd.conf.d/captive-portal-common.conf
+%config                 /usr/local/pf/conf/httpd.conf.d/captive-portal-common2-4.conf
 %config                 /usr/local/pf/conf/httpd.conf.d/httpd.aaa
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.aaa2-4
 %config                 /usr/local/pf/conf/httpd.conf.d/httpd.admin
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.admin2-4
 %config                 /usr/local/pf/conf/httpd.conf.d/httpd.portal
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.portal2-4
 %config                 /usr/local/pf/conf/httpd.conf.d/httpd.proxy
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.proxy2-4
 %config                 /usr/local/pf/conf/httpd.conf.d/httpd.webservices
-%config                 /usr/local/pf/conf/httpd.conf.d/httpd.aaa
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.webservices2-4
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.graphite
+%config                 /usr/local/pf/conf/httpd.conf.d/httpd.graphite2-4
 %config                 /usr/local/pf/conf/httpd.conf.d/log.conf
 %config(noreplace)	/usr/local/pf/conf/httpd.conf.d/ssl-certificates.conf
                         /usr/local/pf/conf/httpd.conf.d/ssl-certificates.conf.example
