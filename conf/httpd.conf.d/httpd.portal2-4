@@ -150,6 +150,7 @@ PerlSwitches -I/usr/local/pf/html/captive-portal/lib
 # portal itself.
 PerlPostConfigRequire /usr/local/pf/lib/pf/web/captiveportal_modperl_require.pl
 PerlLoadModule captiveportal
+PerlLoadModule pf::web::apache2_version
 PerlLoadModule pf::web::dispatcher
 PerlLoadModule pf::WebAPI::InitHandler
 PerlLoadModule pf::web::billinghook
