@@ -6,7 +6,7 @@ pf::web::apache2_version
 
 =head1 SYNOPSIS
 
-This module is to change remote_ip to clienbt_ip as it was changed in Apache2.4 Perl webAPI
+This module is to change remote_ip to client_ip as it was changed in Apache2.4::Connection Perl WebAPI
 
 =cut
 
