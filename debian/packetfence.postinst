@@ -132,6 +132,7 @@ case "$1" in
         systemctl disable redis-server
         systemctl disable apache2
         systemctl disable freeradius
+        systemctl disable isc-dhcp-server
 
         echo Installation complete
         echo "* Please fire up your Web browser and go to https://@ip_packetfence:1443/configurator to complete your PacketFence configuration."
