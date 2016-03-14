@@ -6,6 +6,7 @@ After=network.target packetfence-config.service packetfence-redis-cache.service
 Type=forking
 ExecStart=/usr/local/pf/bin/pfcmd service pf start
 ExecStop=/usr/local/pf/bin/pfcmd service pf stop
+TimoutStartSec=180s
 
 
 [Install]
