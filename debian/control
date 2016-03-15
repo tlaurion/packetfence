@@ -193,7 +193,7 @@ Description: Files needed for sending MAC and IP from ARP requeststo
 
 Package: packetfence-config
 Architecture: all
-Depends: ${misc:Depends}, libcache-bdb-perl, liblog-fast-perl
+Depends: ${misc:Depends}, libcache-bdb-perl, liblog-fast-perl, libfile-flock-perl
 Description: Service use to manage PacketFence configuration.
 
 Package: packetfence-redis-cache
