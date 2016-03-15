@@ -125,7 +125,12 @@ case "$1" in
         rm -rf /usr/local/pf/var/cache/
         invoke-rc.d packetfence-config restart
         # We probably need to have: invoke-rc.d packetfence reload config
-        #/usr/local/pf/bin/pfcmd configreload
+        # Stop services that need to be started by pf
+        systemctl stop apach2
+        systemctl stop carbon-cache
+        systemctl stop freeradius
+        
+        # Start packetfence web administration
         systemctl start packetfence@httpd.admin
         
         #disabling default start for some process
