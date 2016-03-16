@@ -105,7 +105,6 @@ ifneq (,$(filter yes,$(wheezy) $(precise)))
 endif
 ifeq ($(jessie),yes)
 	install -d -m0700 $(CURDIR)/debian/packetfence/lib/systemd/system
-	install -m0700 $(CURDIR)/addons/systemd/packetfence.service $(CURDIR)/debian/packetfence/lib/systemd/system
 	install -m0700 $(CURDIR)/addons/systemd/packetfence@.service $(CURDIR)/debian/packetfence/lib/systemd/system
 endif
 	install -d -m0700 $(CURDIR)/debian/packetfence/etc/default
@@ -137,7 +136,6 @@ endif
 	install -d $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/sbin
 ifeq ($(jessie),yes)
 	install -d -m0700 $(CURDIR)/debian/packetfence-config/lib/systemd/system
-	install -m0700 $(CURDIR)/addons/systemd/packetfence-config.service $(CURDIR)/debian/packetfence-config/lib/systemd/system
 endif
 	install -d -m0700 $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/conf
 	install -d -m2770 $(CURDIR)/debian/packetfence-config$(PREFIX)/$(NAME)/var/cache/pfconfig
@@ -149,7 +147,6 @@ ifneq (,$(filter yes,$(wheezy) $(precise)))
 endif
 ifeq ($(jessie),yes)
 	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
-	install -m0700 $(CURDIR)/addons/systemd/packetfence-redis-cache.service $(CURDIR)/debian/packetfence-redis-cache/lib/systemd/system
 endif
 	install -d -m2770 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/var/run
 	install -d -m0700 $(CURDIR)/debian/packetfence-redis-cache$(PREFIX)/$(NAME)/conf
@@ -178,8 +175,12 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installmime
 #	dh_python
+ifeq ($(jessie),yes)
+	dh_systemd_enable
+endif
+ifneq (,$(filter yes,$(wheezy) $(precise)))
 	dh_installinit
-#	dh_systemd_enable
+endif
 #	dh_installcron
 #	dh_installinfo
 	dh_installman
