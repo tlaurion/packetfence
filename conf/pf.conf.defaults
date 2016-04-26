@@ -1354,6 +1354,11 @@ provisioning_compliance_poll_interval=300s
 #
 # Interval at which PacketFence updates the local Fingerbank data from the cloud API
 fingerbank_data_update_interval=6h
+#
+# maintenance.option_82_task_interval
+#
+# Interval at which PacketFence will query compatibles switches for option 82 switch mac address
+option_82_task_interval=6D
 
 [active_active]
 #
