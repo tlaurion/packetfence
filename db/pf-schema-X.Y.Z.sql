@@ -615,7 +615,7 @@ BEGIN
     WHERE acctuniqueid = p_acctuniqueid 
     AND (acctstoptime IS NULL OR acctstoptime = 0);
 
-  IF (Previous_Session_Time IS NULL) THEN
+  IF (Previous_Session_Time IS NULL AND p_acctsessiontime IS NOT NULL) THEN
     # Set values to 0 when no previous records
     SET Previous_Session_Time = 0;
     SET Previous_Input_Octets = 0;
