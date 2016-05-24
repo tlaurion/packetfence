@@ -359,11 +359,6 @@ host=localhost
 # Should DHCPd be managed by PacketFence?
 dhcpd=enabled
 #
-# services.dhcpd_order
-#
-# Order in which to start this service 
-dhcpd_order=21
-#
 # services.haproxy
 #
 # Should haproxy be started?
@@ -612,11 +607,6 @@ pfdhcplistener=enabled
 #
 # Order in which to start this service 
 pfdhcplistener_order=18
-#
-# services.dhcpd_binary
-#
-# Location of the dhcpd binary. Only necessary to change if you are not running the RPMed version.
-dhcpd_binary=/usr/sbin/dhcpd
 #
 # services.keepalived
 #
