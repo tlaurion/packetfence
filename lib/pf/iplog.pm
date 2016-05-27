@@ -59,9 +59,17 @@ sub iplog_db_prepare {
         qq [ SELECT * FROM iplog WHERE ip = ? AND (end_time = 0 OR end_time > NOW()) ORDER BY start_time DESC LIMIT 1 ]
     );
 
+    $iplog_statements->{'radippool_view_by_ip_sql'} = get_db_handle()->prepare(
+        qq [ SELECT callingstationid AS mac FROM radippool WHERE framedipaddress = ? AND expiry_time > NOW() ORDER BY start_time DESC LIMIT 1 ]
+    );
+
     # We could have used the iplog_list_open_by_mac_sql statement but for performances, we enforce the LIMIT 1
     $iplog_statements->{'iplog_view_by_mac_sql'} = get_db_handle()->prepare(
         qq [ SELECT * FROM iplog WHERE mac = ? AND (end_time = 0 OR end_time > NOW()) ORDER BY start_time DESC LIMIT 1 ]
+    );
+
+    $iplog_statements->{'radippool_view_by_mac_sql'} = get_db_handle()->prepare(
+        qq [ SELECT framedipaddress AS ip FROM radippool WHERE callingstationid = ? AND expiry_time > NOW() ORDER BY start_time DESC LIMIT 1 ]
     );
 
     $iplog_statements->{'iplog_list_open_sql'} = get_db_handle()->prepare(
@@ -452,7 +460,7 @@ sub _view_by_ip {
 
     $logger->debug("Viewing an 'iplog' table entry for the following IP address '$ip'");
 
-    my $query = db_query_execute(IPLOG, $iplog_statements, 'iplog_view_by_ip_sql', $ip) || return (0);
+    my $query = db_query_execute(IPLOG, $iplog_statements, 'radippool_view_by_ip_sql', $ip) || db_query_execute(IPLOG, $iplog_statements, 'iplog_view_by_ip_sql', $ip) || return (0);
     my $ref = $query->fetchrow_hashref();
 
     # just get one row and finish
@@ -475,7 +483,7 @@ sub _view_by_mac {
 
     $logger->debug("Viewing an 'iplog' table entry for the following MAC address '$mac'");
 
-    my $query = db_query_execute(IPLOG, $iplog_statements, 'iplog_view_by_mac_sql', $mac) || return (0);
+    my $query = db_query_execute(IPLOG, $iplog_statements, 'radippool_view_by_mac_sql', $mac) || db_query_execute(IPLOG, $iplog_statements, 'iplog_view_by_mac_sql', $mac) || return (0);
     my $ref = $query->fetchrow_hashref();
 
     # just get one row and finish
