@@ -42,8 +42,6 @@ our (
     $dhcp_fingerprints_file, $dhcp_fingerprints_url,
     #oui.txt variables
     $oui_file, $oui_url,
-    #DHCP OMAPI key file
-    $pf_omapi_key_file,
     #profiles.conf variables
     $profiles_config_file, %Profiles_Config,
     #Other configuraton files variables
@@ -101,7 +99,6 @@ BEGIN {
         $floating_devices_config_file
         $dhcp_fingerprints_file $dhcp_fingerprints_url
         $oui_file $oui_url
-        $pf_omapi_key_file
         $profiles_config_file %Profiles_Config
         $switches_config_file $violations_config_file $authentication_config_file
         $chi_config_file $ui_config_file $floating_devices_file $log_config_file
@@ -162,7 +159,6 @@ $pfcmd_binary   = catfile($bin_dir, "pfcmd");
 
 $oui_file           = catfile($conf_dir, "oui.txt");
 $suricata_categories_file = catfile($conf_dir, "suricata_categories.txt");
-$pf_omapi_key_file  = catfile($conf_dir, "pf_omapi_key");
 $pf_doc_file        = catfile($conf_dir, "documentation.conf");
 $oauth_ip_file      = catfile($conf_dir, "oauth2-ips.conf");
 $ui_config_file     = catfile($conf_dir, "ui.conf");
