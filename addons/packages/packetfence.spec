@@ -1009,6 +1009,8 @@ fi
                         /usr/local/pf/conf/radiusd/load_balancer.conf.example
 %config(noreplace)      /usr/local/pf/conf/radiusd/rest.conf
                         /usr/local/pf/conf/radiusd/rest.conf.example
+%config(noreplace)      /usr/local/pf/conf/radiusd/dhcpd.conf
+                        /usr/local/pf/conf/radiusd/dhcpd.conf.example
 %config(noreplace)      /usr/local/pf/conf/realm.conf
                         /usr/local/pf/conf/realm.conf.example
 %config(noreplace)      /usr/local/pf/conf/radius_filters.conf
