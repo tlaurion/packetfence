@@ -58,6 +58,7 @@ use fingerbank::Config;
 use fingerbank::Redis;
 use fingerbank::DB;
 use pf::cluster;
+use pf::dhcpd;
 
 pf::SwitchFactory->preloadConfiguredModules();
 
@@ -257,6 +258,13 @@ sub registertasks  {
         'fingerbank data update',
         'fingerbank_data_update_interval',
         \&update_fingerbank_data
+    );
+    register_task(
+        'ping_dhcpd',
+        'ping_dhcpd_interval',
+        sub {
+            ping_dhcpd() if isenabled($cluster_enabled);
+        }
     );
 }
 
