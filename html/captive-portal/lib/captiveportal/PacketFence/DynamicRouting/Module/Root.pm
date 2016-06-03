@@ -244,6 +244,9 @@ sub apply_new_node_info {
             $self->username($default_pid);
         }
     }
+    # We take the role+unregdate from the computed node info. This way, if the role wasn't set during the portal process (like in provisioning agent re-install), then it will pick the role it had before
+    $self->new_node_info->{category} = $self->node_info->{category};
+    $self->new_node_info->{unregdate} = $self->node_info->{unregdate};
 
     if(node_register($self->current_mac, $self->username, %{$self->new_node_info()})){
         if($self->new_node_info->{category} && $self->new_node_info->{unregdate}) {
