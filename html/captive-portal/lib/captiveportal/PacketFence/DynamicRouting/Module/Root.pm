@@ -236,7 +236,9 @@ sub apply_new_node_info {
     my ($self) = @_;
     get_logger->debug(sub { use Data::Dumper; "Applying new node_info to user ".Dumper($self->new_node_info)});
     if(node_register($self->current_mac, $self->username, %{$self->new_node_info()})){
-        $self->app->flash->{notice} = [ "Role %s has been assigned to your device with unregistration date : %s", $self->new_node_info->{category}, $self->new_node_info->{unregdate} ];
+        if($self->new_node_info->{category} && $self->new_node_info->{unregdate}) {
+            $self->app->flash->{notice} = [ "Role %s has been assigned to your device with unregistration date : %s", $self->new_node_info->{category}, $self->new_node_info->{unregdate} ];
+        }
         return $TRUE;
     }
     else {
