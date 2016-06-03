@@ -28,7 +28,7 @@ has '+route_map' => (default => sub {
 
 use pf::log;
 use pf::node;
-use pf::config;
+use pf::config qw($default_pid);
 use pf::constants qw($TRUE $FALSE);
 use pf::util;
 use pf::violation;
@@ -235,6 +235,16 @@ Apply the new node info in the session to the node
 sub apply_new_node_info {
     my ($self) = @_;
     get_logger->debug(sub { use Data::Dumper; "Applying new node_info to user ".Dumper($self->new_node_info)});
+
+    unless($self->username){
+        if($self->new_node_info->{pid}){
+            $self->username($self->new_node_info->{pid});
+        }
+        else {
+            $self->username($default_pid);
+        }
+    }
+
     if(node_register($self->current_mac, $self->username, %{$self->new_node_info()})){
         if($self->new_node_info->{category} && $self->new_node_info->{unregdate}) {
             $self->app->flash->{notice} = [ "Role %s has been assigned to your device with unregistration date : %s", $self->new_node_info->{category}, $self->new_node_info->{unregdate} ];
