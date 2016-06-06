@@ -48,9 +48,11 @@ sub _build_radiusdManagers {
     $listens->{acct} = {
       launcher => $self->launcher . " -n acct"
     };
-    $listens->{dhcpd} = {
-      launcher => $self->launcher . " -n dhcpd"
-    };
+    if (isenabled($pf::config::Config{'services'}{'radiusd-dhcpd'})) {
+        $listens->{dhcpd} = {
+          launcher => $self->launcher . " -n dhcpd"
+        };
+    }
     my @managers = map {
         my $id = $_;
         my $launcher = $self->launcher;
