@@ -90,6 +90,7 @@ Requires: libpcap, libxml2, zlib, zlib-devel, glibc-common,
 Requires: httpd, mod_ssl
 Requires: mod_perl, mod_qos, mod_evasive
 requires: libapreq2
+Requires: dhcp
 Requires: redis
 Requires: freeradius >= 3.0.11, freeradius-mysql, freeradius-perl, freeradius-ldap, freeradius-utils, freeradius-redis, freeradius-rest, freeradius-radsniff >= 3.0.11
 Requires: make
@@ -453,6 +454,7 @@ done
 %{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/ssl_mutex
 %endif
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/conf
+%{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/dhcpd
 %{__install} -d -m2775 $RPM_BUILD_ROOT/usr/local/pf/var/run
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/rrd 
 %{__install} -d $RPM_BUILD_ROOT/usr/local/pf/var/session
@@ -641,6 +643,11 @@ if [ ! -f /usr/local/pf/conf/ssl/server.crt ]; then
     	-keyout /usr/local/pf/conf/ssl/server.key\
     	-nodes -config /usr/local/pf/conf/openssl.cnf
     cat /usr/local/pf/conf/ssl/server.crt /usr/local/pf/conf/ssl/server.key > /usr/local/pf/conf/ssl/server.pem
+fi
+
+# Create OMAPI key
+if [ ! -f /usr/local/pf/conf/pf_omapi_key ]; then
+    /usr/bin/openssl rand -base64 -out /usr/local/pf/conf/pf_omapi_key 32
 fi
 
 for service in snortd httpd snmptrapd portreserve redis
@@ -1040,6 +1047,7 @@ fi
 %config(noreplace)      /usr/local/pf/conf/vlan_filters.conf
                         /usr/local/pf/conf/vlan_filters.conf.example
 %config                 /usr/local/pf/conf/vlan_filters.conf.defaults
+%config                 /usr/local/pf/conf/dhcpd.conf
 %config(noreplace)      /usr/local/pf/conf/haproxy.conf
                         /usr/local/pf/conf/haproxy.conf.example
 %dir                    /usr/local/pf/conf/httpd.conf.d
@@ -1268,6 +1276,7 @@ fi
 %doc                    /usr/local/pf/UPGRADE.old
 %dir                    /usr/local/pf/var
 %dir                    /usr/local/pf/var/conf
+%dir                    /usr/local/pf/var/dhcpd
 %dir                    /usr/local/pf/raddb
                         /usr/local/pf/raddb/*
 %config                 /usr/local/pf/raddb/clients.conf
